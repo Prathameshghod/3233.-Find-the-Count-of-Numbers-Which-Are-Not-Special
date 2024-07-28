@@ -1,0 +1,84 @@
+********************************************** 3233. Find the Count of Numbers Which Are Not Special ******************************************
+
+# Python Code 
+
+class Solution:
+    def nonSpecialCount(self, l: int, r: int) -> int:
+        max_val = int(math.sqrt(r) + 1) # limit the range for checking prime numbers
+        # Sieve of Eratosthenes 
+        is_prime = [True]*( max_val + 1)
+        
+        is_prime[0] = is_prime[1] = False  # 0 and 1 are not prime numbers
+        
+        for i in range( 2, int(math.sqrt(max_val)) + 1):
+            if is_prime[i]:
+                for j in range( i*i, max_val+1, i):
+                    is_prime[j]= False 
+                    
+    # finding the special number
+        special_num = set()
+        
+        for i in range(2, max_val + 1 ):
+            if is_prime[i]:
+                special_number = i*i 
+                
+                if l<= special_number <= r:
+                    special_num.add(special_number)
+                    
+    # finding the count of non special numbers         
+        total_count = r-l +1 
+                    
+        special_count = len([num for num in special_num if l<= num <= r])
+               
+        return total_count - special_count
+
+
+/////////////////////////////////------C++ Code--------- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    int nonSpecialCount(int l, int r) {
+        int max_val = static_cast<int>(std:: sqrt(r)) +1;
+        
+        // sieve of Erastothenes 
+        std::vector<bool> is_prime(max_val +1 , true);
+        
+        is_prime[0] = is_prime[1] = false; 
+        
+        for( int i=2 ; i<= std::sqrt(max_val); ++i){
+            
+            if (is_prime[i]){
+                for (int j= i*i ; j<= max_val ; j+=i){
+                    is_prime[j]= false;
+                }
+            }
+        }
+        
+        // finding the special number 
+        
+        std:: unordered_set<int>special_num;
+        for( int i=2; i<= max_val; ++i){
+            if (is_prime[i]){
+                int special_number = i*i;
+                
+                if (l <= special_number && special_number<= r){
+                    special_num.insert(special_number);
+                    
+                }
+            }
+        }
+        
+      //  finding the non special number and counting them
+        
+        int total_count = r-l+1;
+        int special_count =0;
+        
+        for( int num : special_num){
+            if (l<= num && num<= r ){
+                ++special_count;
+            }
+        }
+        
+        return total_count - special_count;
+    }
+};
